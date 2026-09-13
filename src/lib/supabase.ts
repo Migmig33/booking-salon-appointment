@@ -1,7 +1,16 @@
 import { createClient } from "@supabase/supabase-js"
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim()
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim()
+// These browser credentials are intentionally public and remain protected by
+// Supabase RLS/RPC permissions. Environment variables can override them for
+// local development or a future project migration.
+const productionSupabaseUrl = "https://jwqdomybmrnfokdngtka.supabase.co"
+const productionSupabasePublishableKey = "sb_publishable_FBimCmbOWjIALiHMLNnJjw_cLr62Hze"
+
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL?.trim() || productionSupabaseUrl
+const supabaseAnonKey =
+  import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() ||
+  productionSupabasePublishableKey
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
 
