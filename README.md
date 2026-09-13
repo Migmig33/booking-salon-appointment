@@ -29,7 +29,7 @@ The protected salon dashboard is available at `/admin/login`. It uses the same `
 
 Admin signup is intentionally not exposed. To create the first owner:
 
-1. In Supabase Dashboard, open **Authentication → Users** and manually add the owner with a confirmed email and a temporary password.
+1. In Supabase Dashboard, open **Authentication → Users** and manually add the owner with a confirmed email and a strong password shared through a secure channel.
 2. In SQL Editor, assign that Auth user to the owner role:
 
    ```sql

@@ -22,8 +22,10 @@ import SettingsPage from "./pages/SettingsPage"
 
 function AdminLogin({
   onLogin,
+  accessError,
 }: {
   onLogin: (email: string, password: string) => Promise<void>
+  accessError: string
 }) {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -78,9 +80,9 @@ function AdminLogin({
           <p className="text-[13px] text-warm-gray mt-2">
             Use the account provided by the salon owner.
           </p>
-          {error && (
+          {(error || accessError) && (
             <div className="mt-5">
-              <ErrorBlock message={error} />
+              <ErrorBlock message={error || accessError} />
             </div>
           )}
           <form onSubmit={submit} className="mt-7 space-y-4">
@@ -169,7 +171,11 @@ export default function AdminApp() {
         setSession(null)
         setProfile(null)
         setError(
-          caught instanceof Error ? caught.message : "Staff access denied.",
+          caught instanceof Error &&
+            (caught.message.includes("ADMIN_ACCESS_DENIED") ||
+              caught.message.includes("permission denied"))
+            ? "This account does not have active owner or manager access."
+            : "Staff access could not be verified.",
         )
         navigate("/admin/login", true)
       } finally {
@@ -230,7 +236,8 @@ export default function AdminApp() {
         </div>
       </div>
     )
-  if (!session || !profile) return <AdminLogin onLogin={login} />
+  if (!session || !profile)
+    return <AdminLogin onLogin={login} accessError={error} />
   const owner = profile.role === "owner"
   let content: React.ReactNode
   if (path === "/admin") content = <DashboardPage navigate={navigate} />

@@ -33,9 +33,9 @@ Before public launch, finish the items below. Do not run `supabase db reset` aga
 
 ### 1. Create the first owner account
 
-1. In Supabase Dashboard, open **Authentication → Users** and manually add the owner with a confirmed email and temporary password.
+1. In Supabase Dashboard, open **Authentication → Users** and manually add the owner with a confirmed email and a strong password shared through a secure channel.
 2. Use the SQL statement in the README under **Owner and manager dashboard** to add that Auth user to `public.admin_users` with role `owner`.
-3. Sign in at `https://tjhairsalon.vercel.app/admin/login` and replace the temporary password.
+3. Sign in at `https://tjhairsalon.vercel.app/admin/login` and verify the dashboard loads.
 
 There is intentionally no public admin signup flow.
 
