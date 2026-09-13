@@ -18,6 +18,9 @@ This file is a handoff checklist for completing the Supabase/Brevo booking-email
 - The production Vite build passes.
 - The latest source changes were pushed to GitHub `main` on 2026-09-14.
 - A production-mode worker smoke test completed successfully with an empty queue.
+- Vercel production service resumed and the direct booking routes return HTTP 200.
+- The production frontend now includes the browser-safe Supabase configuration.
+- The hosted booking API returns 17 active services.
 
 No secret values belong in this file, GitHub, Vercel client variables, or `VITE_*` variables.
 
@@ -25,20 +28,7 @@ No secret values belong in this file, GitHub, Vercel client variables, or `VITE_
 
 Before public launch, finish the items below. Do not run `supabase db reset` against the hosted project.
 
-### 1. Resume and verify the Vercel deployment
-
-The production domain currently returns HTTP 503 with `X-Vercel-Error: DEPLOYMENT_PAUSED`.
-
-1. Open the project in the Vercel dashboard and go to **Settings**.
-2. Use **Resume Service** and confirm the action.
-3. If the button is unavailable, review the account email, usage limits, spend-management settings, and account status for the reason Vercel paused the project.
-4. Wait a few minutes for service to resume; a separate redeploy should not be necessary.
-5. Confirm these URLs load directly in a new/incognito browser tab:
-  - `https://tjhairsalon.vercel.app/book`
-  - `https://tjhairsalon.vercel.app/find-booking`
-  - A valid `/manage-booking/<token>` URL after making a booking
-
-### 2. Test real email delivery
+### 1. Test real email delivery
 
 1. Confirm the Brevo sender email is verified.
 2. Book an appointment at `https://tjhairsalon.vercel.app/book` using an email address you can check.
@@ -61,7 +51,7 @@ Delivery statuses:
 - `sent`: accepted by Brevo
 - `failed`: retry limit reached; inspect `last_error`
 
-### 3. Configure reminder/retry scheduling
+### 2. Configure reminder/retry scheduling
 
 In Supabase Dashboard:
 
