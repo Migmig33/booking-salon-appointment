@@ -16,6 +16,8 @@ This file is a handoff checklist for completing the Supabase/Brevo booking-email
 - Hosted migrations `202609130001` and `202609130002` verified as applied on 2026-09-14.
 - `booking-email-worker` deployed to project `jwqdomybmrnfokdngtka` on 2026-09-14.
 - The production Vite build passes.
+- The latest source changes were pushed to GitHub `main` on 2026-09-14.
+- A production-mode worker smoke test completed successfully with an empty queue.
 
 No secret values belong in this file, GitHub, Vercel client variables, or `VITE_*` variables.
 
@@ -23,11 +25,15 @@ No secret values belong in this file, GitHub, Vercel client variables, or `VITE_
 
 Before public launch, finish the items below. Do not run `supabase db reset` against the hosted project.
 
-### 1. Publish and verify the latest website code
+### 1. Resume and verify the Vercel deployment
 
-- Push the current source changes to the connected GitHub repository.
-- Confirm Vercel completes a new production deployment.
-- Confirm these URLs load directly in a new/incognito browser tab:
+The production domain currently returns HTTP 503 with `X-Vercel-Error: DEPLOYMENT_PAUSED`.
+
+1. Open the project in the Vercel dashboard and go to **Settings**.
+2. Use **Resume Service** and confirm the action.
+3. If the button is unavailable, review the account email, usage limits, spend-management settings, and account status for the reason Vercel paused the project.
+4. Wait a few minutes for service to resume; a separate redeploy should not be necessary.
+5. Confirm these URLs load directly in a new/incognito browser tab:
   - `https://tjhairsalon.vercel.app/book`
   - `https://tjhairsalon.vercel.app/find-booking`
   - A valid `/manage-booking/<token>` URL after making a booking
