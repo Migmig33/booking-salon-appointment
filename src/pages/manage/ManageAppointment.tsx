@@ -18,12 +18,19 @@ import {
 } from "../../lib/time"
 import { googleCalendarUrl } from "../../lib/calendar"
 import {
+  CANCELLATION_POLICY,
   SALON_ADDRESS,
   SALON_DIRECTIONS_URL,
   SALON_NAME,
   SALON_PHONE_DISPLAY,
   SALON_PHONE_LINK,
 } from "../../config/salon"
+
+const CANCELLATION_WINDOW_MS = 24 * 60 * 60 * 1000
+
+function canCancelAppointment(startAt: string) {
+  return new Date(startAt).getTime() - Date.now() >= CANCELLATION_WINDOW_MS
+}
 
 type ManageView = "detail" | "reschedule" | "reschedule-confirm" | "cancel-confirm" | "cancelled" | "rescheduled"
 
@@ -197,6 +204,12 @@ export default function ManageAppointment({
   }
 
   const submitCancellation = async () => {
+    if (appointment && !canCancelAppointment(appointment.startAt)) {
+      setActionError(
+        "Online cancellation closes 24 hours before your appointment. Please call the salon for assistance.",
+      )
+      return
+    }
     setActionLoading(true)
     setActionError("")
     try {
@@ -247,6 +260,7 @@ export default function ManageAppointment({
     const cancelled = appointment.status === "cancelled"
     const manageable =
       appointment.status === "confirmed" || appointment.status === "rescheduled"
+    const cancellationAllowed = canCancelAppointment(appointment.startAt)
     return (
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-8 lg:gap-12">
         <div>
@@ -337,6 +351,17 @@ export default function ManageAppointment({
 
           {manageable && (
             <div className="flex flex-col gap-3">
+              <div className="border border-warm-line bg-cream-dark px-4 py-3">
+                <p className="text-[11px] tracking-[0.12em] uppercase text-charcoal font-medium mb-1">
+                  Cancellation Policy
+                </p>
+                <p className="text-[12px] text-warm-gray leading-relaxed">
+                  {CANCELLATION_POLICY}
+                  {!cancellationAllowed && (
+                    <> The online cancellation window for this appointment has closed.</>
+                  )}
+                </p>
+              </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={() => setView("reschedule")}
@@ -346,9 +371,12 @@ export default function ManageAppointment({
                 </button>
                 <button
                   onClick={() => setView("cancel-confirm")}
-                  className="flex-1 border border-warm-line text-charcoal text-[13px] font-medium py-3 hover:border-charcoal transition-all tracking-wide"
+                  disabled={!cancellationAllowed}
+                  className="flex-1 border border-warm-line text-charcoal text-[13px] font-medium py-3 hover:border-charcoal transition-all tracking-wide disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-warm-line"
                 >
-                  Cancel Appointment
+                  {cancellationAllowed
+                    ? "Cancel Appointment"
+                    : "Cancellation Window Closed"}
                 </button>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -663,6 +691,7 @@ export default function ManageAppointment({
 
   const CancelConfirmView = () => {
     if (!appointment) return null
+    const cancellationAllowed = canCancelAppointment(appointment.startAt)
     return (
       <div className="max-w-lg">
         <button
@@ -678,8 +707,7 @@ export default function ManageAppointment({
           Cancel Your Appointment?
         </h2>
         <p className="text-[14px] text-warm-gray mb-8 leading-relaxed">
-          Cancelling allows the salon to offer this time to another client.
-          There is no cancellation fee.
+          {CANCELLATION_POLICY}
         </p>
         <div className="bg-taupe p-6 mb-6 space-y-2.5">
           {[
@@ -698,12 +726,16 @@ export default function ManageAppointment({
             </div>
           ))}
         </div>
+        {!cancellationAllowed &&
+          renderError(
+            "The online cancellation window has closed. Please call the salon for assistance.",
+          )}
         {actionError && renderError(actionError)}
         <div className="flex flex-col sm:flex-row gap-3">
           <button
-            disabled={actionLoading}
+            disabled={actionLoading || !cancellationAllowed}
             onClick={() => void submitCancellation()}
-            className="border-2 border-charcoal/30 text-charcoal text-[13px] font-medium px-7 py-3.5 hover:bg-charcoal hover:text-cream"
+            className="border-2 border-charcoal/30 text-charcoal text-[13px] font-medium px-7 py-3.5 hover:bg-charcoal hover:text-cream disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-charcoal"
           >
             {actionLoading ? "Cancelling..." : "Yes, Cancel Appointment"}
           </button>

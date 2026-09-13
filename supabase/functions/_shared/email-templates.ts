@@ -11,6 +11,8 @@ const SALON_PHONE_URL = "tel:7088089910"
 const DIRECTIONS_URL =
   "https://maps.google.com/?q=47-42+Bell+Blvd,+Bayside,+NY+11361"
 const TIME_ZONE = "America/New_York"
+const CANCELLATION_POLICY =
+  "Appointments may only be cancelled at least 24 hours before the scheduled start time."
 
 function escapeHtml(value: unknown) {
   return String(value ?? "")
@@ -75,6 +77,7 @@ function frame(title: string, intro: string, details: string, actions: string) {
             <p style="margin:0 0 22px;line-height:1.6;color:#5d514a">${escapeHtml(intro)}</p>
             <table role="presentation" cellspacing="0" cellpadding="0" style="width:100%;margin-bottom:22px;border-top:1px solid #eee5df;border-bottom:1px solid #eee5df">${details}</table>
             <div>${actions}</div>
+            <p style="margin:24px 0 0;color:#5d514a;font-size:13px;line-height:1.6"><strong>Cancellation policy:</strong> ${escapeHtml(CANCELLATION_POLICY)}</p>
             <p style="margin:24px 0 0;color:#76685f;font-size:13px;line-height:1.6">All appointment times are shown in New York time.<br>${escapeHtml(SALON_ADDRESS)} · ${escapeHtml(SALON_PHONE)}</p>
           </td></tr>
         </table>
@@ -137,7 +140,7 @@ export function renderAppointmentEmail(
         details,
         actions,
       ),
-      text: `${subject}\n\nHi ${value.customerName}, your appointment is confirmed.\n\nBooking reference: ${reference}\nService: ${service}\nAdd-ons: ${addOns}\nStylist: ${stylist}\nDate: ${value.date}\nTime: ${value.time}\nEstimated duration: ${value.duration}\nAddress: ${SALON_ADDRESS}\nPhone: ${SALON_PHONE}\n\nManage Appointment: ${value.manageUrl}\nGet Directions: ${DIRECTIONS_URL}\nCall Salon: ${SALON_PHONE_URL}`,
+      text: `${subject}\n\nHi ${value.customerName}, your appointment is confirmed.\n\nBooking reference: ${reference}\nService: ${service}\nAdd-ons: ${addOns}\nStylist: ${stylist}\nDate: ${value.date}\nTime: ${value.time}\nEstimated duration: ${value.duration}\nAddress: ${SALON_ADDRESS}\nPhone: ${SALON_PHONE}\n\nCancellation policy: ${CANCELLATION_POLICY}\n\nManage Appointment: ${value.manageUrl}\nGet Directions: ${DIRECTIONS_URL}\nCall Salon: ${SALON_PHONE_URL}`,
     }
   }
 
@@ -158,7 +161,7 @@ export function renderAppointmentEmail(
         details,
         button("Manage Appointment", value.manageUrl),
       ),
-      text: `${subject}\n\nHi ${value.customerName}, your new appointment time is confirmed.\n\nBooking reference: ${reference}\nService: ${service}\nStylist: ${stylist}\nNew date: ${value.date}\nNew time: ${value.time}\n\nManage Appointment: ${value.manageUrl}\n${contact}`,
+      text: `${subject}\n\nHi ${value.customerName}, your new appointment time is confirmed.\n\nBooking reference: ${reference}\nService: ${service}\nStylist: ${stylist}\nNew date: ${value.date}\nNew time: ${value.time}\n\nCancellation policy: ${CANCELLATION_POLICY}\n\nManage Appointment: ${value.manageUrl}\n${contact}`,
     }
   }
 
@@ -205,6 +208,6 @@ export function renderAppointmentEmail(
       details,
       actions,
     ),
-    text: `${subject}\n\nHi ${value.customerName}, this is a reminder for your appointment tomorrow.\n\nBooking reference: ${reference}\nService: ${service}\nStylist: ${stylist}\nDate: ${value.date}\nTime: ${value.time}\nAddress: ${SALON_ADDRESS}\n\nView Appointment: ${value.manageUrl}\nReschedule: ${value.manageUrl}?action=reschedule\nCancel: ${value.manageUrl}?action=cancel`,
+    text: `${subject}\n\nHi ${value.customerName}, this is a reminder for your appointment tomorrow.\n\nBooking reference: ${reference}\nService: ${service}\nStylist: ${stylist}\nDate: ${value.date}\nTime: ${value.time}\nAddress: ${SALON_ADDRESS}\n\nCancellation policy: ${CANCELLATION_POLICY}\n\nView Appointment: ${value.manageUrl}\nReschedule: ${value.manageUrl}?action=reschedule\nCancel: ${value.manageUrl}?action=cancel`,
   }
 }

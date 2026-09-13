@@ -10,7 +10,7 @@ import type {
   Stylist,
 } from "../types/booking"
 
-export type BookingErrorCode = "NOT_CONFIGURED" | "LOAD_FAILED" | "SLOT_TAKEN" | "INVALID_LINK" | "ALREADY_CANCELLED" | "VALIDATION_FAILED" | "RATE_LIMITED" | "NETWORK_ERROR" | "BOOKING_FAILED" | "RESCHEDULE_FAILED"
+export type BookingErrorCode = "NOT_CONFIGURED" | "LOAD_FAILED" | "SLOT_TAKEN" | "INVALID_LINK" | "ALREADY_CANCELLED" | "CANCELLATION_WINDOW_CLOSED" | "VALIDATION_FAILED" | "RATE_LIMITED" | "NETWORK_ERROR" | "BOOKING_FAILED" | "RESCHEDULE_FAILED"
 
 export class BookingApiError extends Error {
   constructor(
@@ -80,6 +80,12 @@ function apiError(error: unknown, fallback: BookingErrorCode): BookingApiError {
       "This appointment has already been cancelled.",
     )
   }
+  if (raw.includes("CANCELLATION_WINDOW_CLOSED")) {
+    return new BookingApiError(
+      "CANCELLATION_WINDOW_CLOSED",
+      "Online cancellation closes 24 hours before your appointment. Please call the salon for assistance.",
+    )
+  }
   if (raw.includes("RATE_LIMITED")) {
     return new BookingApiError(
       "RATE_LIMITED",
@@ -100,6 +106,8 @@ function apiError(error: unknown, fallback: BookingErrorCode): BookingApiError {
       "That time was just booked by someone else. Please choose another available time.",
     INVALID_LINK: "This appointment link is invalid or no longer available.",
     ALREADY_CANCELLED: "This appointment has already been cancelled.",
+    CANCELLATION_WINDOW_CLOSED:
+      "Online cancellation closes 24 hours before your appointment. Please call the salon for assistance.",
     VALIDATION_FAILED: "Please check your information and try again.",
     RATE_LIMITED: "Too many attempts. Please wait a few minutes and try again.",
     NETWORK_ERROR:

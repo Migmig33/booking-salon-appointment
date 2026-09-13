@@ -2,7 +2,12 @@ import type { Page } from "../../App"
 import type { Appointment } from "../../types/booking"
 import { googleCalendarUrl } from "../../lib/calendar"
 import { durationLabel, formatAppointmentDate, formatAppointmentTime } from "../../lib/time"
-import { SALON_ADDRESS, SALON_DIRECTIONS_URL, SALON_PHONE_LINK } from "../../config/salon"
+import {
+  CANCELLATION_POLICY,
+  SALON_ADDRESS,
+  SALON_DIRECTIONS_URL,
+  SALON_PHONE_LINK,
+} from "../../config/salon"
 
 interface Props {
   appointment: Appointment
@@ -62,6 +67,11 @@ export default function StepConfirm({ appointment, managementToken, navigate, op
                 </div>
               ))}
           </div>
+
+          <p className="text-[12px] text-warm-gray leading-relaxed mb-6">
+            <span className="font-medium text-charcoal">Cancellation policy:</span>{" "}
+            {CANCELLATION_POLICY}
+          </p>
 
           <button
             onClick={() => openManagement(managementToken)}

@@ -1,5 +1,6 @@
 import type { BookingData, BookingStep } from '../../App'
 import { durationLabel } from "../../lib/time"
+import { CANCELLATION_POLICY } from "../../config/salon"
 
 interface Props {
   booking: BookingData
@@ -150,9 +151,14 @@ export default function StepReview({ booking, onConfirm, onBack, onEdit, submitt
         </div>
       </div>
 
-      <p className="text-[12px] text-warm-gray leading-relaxed mb-8">
-        By confirming, you are scheduling this appointment at TJ Hair Salon.
-      </p>
+      <div className="border border-warm-line bg-cream-dark px-4 py-3 mb-8">
+        <p className="text-[11px] tracking-[0.12em] uppercase text-charcoal font-medium mb-1">
+          Cancellation Policy
+        </p>
+        <p className="text-[12px] text-warm-gray leading-relaxed">
+          {CANCELLATION_POLICY} By confirming, you agree to this policy.
+        </p>
+      </div>
 
       {error && (
         <div role="alert" className="border border-bronze/30 bg-bronze/[0.05] px-4 py-3 text-[12px] text-charcoal-mid leading-relaxed mb-5">
