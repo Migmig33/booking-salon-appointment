@@ -2,6 +2,10 @@
 
 React + Vite + Tailwind CSS project running inside Figma Make.
 
+## Product and business rules
+
+Before changing architecture, branding, client data, deployment strategy, or legal content, read `USER_BUSINESS_RULES.md` completely. This repository is a reusable white-label foundation with separate client installations; TJ Hair Salon is the current installation, not a permanent product-wide brand.
+
 ## Development Server
 
 A Vite development server is **already running** on `$PORT` (default 8443). You don't need to start it manually.

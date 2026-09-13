@@ -7,13 +7,14 @@ import BookingLayout from "./pages/booking/BookingLayout"
 import ManageAppointment from "./pages/manage/ManageAppointment"
 import FindBooking from "./pages/manage/FindBooking"
 import ReminderPreview from "./pages/manage/ReminderPreview"
+import { BookingTermsPage, PrivacyPolicyPage } from "./pages/LegalPages"
 import { emptyBooking } from "./types/booking"
 import type { Appointment, BookingData } from "./types/booking"
 import { formatAppointmentTime, salonDateKey } from "./lib/time"
 
 const AdminApp = lazy(() => import("./admin/AdminApp"))
 
-export type Page = "home" | "services" | "booking" | "manage" | "find" | "reminder"
+export type Page = "home" | "services" | "booking" | "manage" | "find" | "reminder" | "privacy" | "terms"
 export type BookingStep = "service" | "stylist" | "datetime" | "details" | "review" | "confirm"
 export type { BookingData } from "./types/booking"
 
@@ -43,6 +44,10 @@ function routeState() {
     return { page: "booking" as Page, token: "", action: null }
   if (path === "/reminder")
     return { page: "reminder" as Page, token: "", action: null }
+  if (path === "/privacy-policy" || path === "/privacy")
+    return { page: "privacy" as Page, token: "", action: null }
+  if (path === "/booking-terms" || path === "/terms")
+    return { page: "terms" as Page, token: "", action: null }
   return { page: "home" as Page, token: "", action: null }
 }
 
@@ -52,6 +57,8 @@ const pagePaths: Record<Exclude<Page, "manage">, string> = {
   booking: "/book",
   find: "/find-booking",
   reminder: "/reminder",
+  privacy: "/privacy-policy",
+  terms: "/booking-terms",
 }
 
 export default function App() {
@@ -189,6 +196,12 @@ function CustomerApp() {
           bookingRef={appointment.bookingReference}
           navigate={navigate}
         />
+      )}
+      {page === "privacy" && (
+        <PrivacyPolicyPage navigate={navigate} startBooking={startBooking} />
+      )}
+      {page === "terms" && (
+        <BookingTermsPage navigate={navigate} startBooking={startBooking} />
       )}
       {page === "reminder" && !appointment && (
         <FindBooking navigate={navigate} openManagement={openManagement} />

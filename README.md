@@ -1,4 +1,6 @@
-# TJ Hair Salon customer booking app
+# White-label salon booking platform
+
+> **Product direction:** This repository is the shared foundation for separately deployed, configuration-driven salon installations. TJ Hair Salon is the current installation, not a permanent product-wide brand. Read [USER_BUSINESS_RULES.md](./USER_BUSINESS_RULES.md) before changing architecture, branding, client data, deployment strategy, or legal content.
 
 The existing Figma Make React/Vite interface is connected to Supabase/PostgreSQL for customer booking and appointment management. The database is the source of truth for services, add-ons, stylists, availability, blocked time, appointment conflicts, customers, and appointment status.
 
