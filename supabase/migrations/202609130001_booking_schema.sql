@@ -11,7 +11,7 @@ begin
     'no_show'
   );
 exception
-  when duplicate_object then null;
+  when duplicate_object or duplicate_table then null;
 end $$;
 
 create table if not exists public.services (
@@ -133,7 +133,7 @@ begin
     )
     where (status in ('confirmed', 'rescheduled'));
 exception
-  when duplicate_object then null;
+  when duplicate_object or duplicate_table then null;
 end $$;
 
 create table if not exists public.appointment_addons (

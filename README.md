@@ -25,14 +25,14 @@ SPA hosting must rewrite `/book`, `/find-booking`, and `/manage-booking/*` reque
 
 ## Customer email notifications
 
-Booking confirmation, reschedule, cancellation, and next-day reminder emails are implemented by the `booking-email-worker` Supabase Edge Function using Resend. Database triggers add committed appointment events to `email_deliveries`; the worker claims and sends them with retries. Provider failures do not roll back appointments.
+Booking confirmation, reschedule, cancellation, and next-day reminder emails are implemented by the `booking-email-worker` Supabase Edge Function. Brevo is the default provider, with Resend available as an alternative. Database triggers add committed appointment events to `email_deliveries`; the worker claims and sends them with retries. Provider failures do not roll back appointments.
 
 The reusable HTML/plain-text templates are in `supabase/functions/_shared/email-templates.ts`. Each email receives a fresh 256-bit management token; only its SHA-256 hash is kept as appointment authorization. The private outbox removes the plaintext token after successful or simulated delivery.
 
 ### Configure and deploy
 
-1. Create a Resend account, verify the sending domain, and create a Resend API key.
-2. Copy `supabase/functions/email.env.example` to `supabase/functions/.env.email` (it is ignored by Git), then fill in `PUBLIC_SITE_URL`, `EMAIL_FROM`, and the Resend values.
+1. Create a Brevo account, verify a sender email, and create a Brevo API key under Transactional → SMTP & API. A custom domain is recommended but is not required for the free sender-email setup.
+2. Copy `supabase/functions/email.env.example` to `supabase/functions/.env.email` (it is ignored by Git), then fill in `PUBLIC_SITE_URL`, `BREVO_API_KEY`, `EMAIL_FROM_NAME`, and `EMAIL_FROM_ADDRESS`.
 3. Link and deploy the Supabase project:
 
    ```sh
@@ -44,7 +44,7 @@ The reusable HTML/plain-text templates are in `supabase/functions/_shared/email-
 
 4. In Supabase Dashboard → Integrations → Cron, schedule the `booking-email-worker` Edge Function at least every five minutes. The scheduled invocation should use a Supabase secret API key. Each run also safely enqueues tomorrow's reminders in `America/New_York` before processing the outbox.
 
-Never put `RESEND_API_KEY` or a Supabase secret/service-role key in `.env.local`, `VITE_*` variables, frontend source, or a public hosting provider's client environment.
+Never put `BREVO_API_KEY`, `RESEND_API_KEY`, or a Supabase secret/service-role key in `.env.local`, `VITE_*` variables, frontend source, or a public hosting provider's client environment.
 
 ### Safe modes
 

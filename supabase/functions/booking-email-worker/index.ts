@@ -26,6 +26,53 @@ function emailMode() {
   return mode as "log" | "test" | "production"
 }
 
+function emailProviderName() {
+  const provider = (Deno.env.get("EMAIL_PROVIDER") ?? "brevo").toLowerCase()
+  if (!["brevo", "resend"].includes(provider)) {
+    throw new Error("EMAIL_PROVIDER must be brevo or resend")
+  }
+  return provider as "brevo" | "resend"
+}
+
+function brevoProvider(): EmailProvider {
+  const apiKey = requiredEnvironment("BREVO_API_KEY")
+  const senderName = Deno.env.get("EMAIL_FROM_NAME")?.trim() || "TJ Hair Salon"
+  const senderEmail = requiredEnvironment("EMAIL_FROM_ADDRESS")
+
+  return {
+    async send({ deliveryId, recipient, email }) {
+      const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "api-key": apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sender: { name: senderName, email: senderEmail },
+          to: [{ email: recipient }],
+          subject: email.subject,
+          htmlContent: email.html,
+          textContent: email.text,
+          headers: { idempotencyKey: deliveryId },
+          tags: ["tj-appointment"],
+        }),
+      })
+
+      const body = (await response.json().catch(() => ({}))) as {
+        messageId?: string
+        message?: string
+      }
+      if (!response.ok || !body.messageId) {
+        throw new Error(
+          `Brevo rejected the email (${response.status}): ${body.message ?? "unknown provider error"}`,
+        )
+      }
+      return { messageId: body.messageId }
+    },
+  }
+}
+
 function resendProvider(): EmailProvider {
   const apiKey = requiredEnvironment("RESEND_API_KEY")
   const from = requiredEnvironment("EMAIL_FROM")
@@ -60,6 +107,10 @@ function resendProvider(): EmailProvider {
       return { messageId: body.id }
     },
   }
+}
+
+function configuredProvider() {
+  return emailProviderName() === "brevo" ? brevoProvider() : resendProvider()
 }
 
 function retryDelay(attempts: number) {
@@ -97,7 +148,7 @@ const securedHandler = withSupabase(
     }
 
     const deliveries = (data ?? []) as ClaimedEmailDelivery[]
-    const provider = mode === "log" ? null : resendProvider()
+    const provider = mode === "log" ? null : configuredProvider()
     let delivered = 0
     let failed = 0
 
