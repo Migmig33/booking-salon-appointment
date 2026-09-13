@@ -58,12 +58,7 @@ export interface AvailabilitySlot {
   hour: number
 }
 
-export type AppointmentStatus =
-  | "confirmed"
-  | "rescheduled"
-  | "cancelled"
-  | "completed"
-  | "no_show"
+export type AppointmentStatus = "confirmed" | "checked_in" | "rescheduled" | "cancelled" | "completed" | "no_show"
 
 export interface Appointment {
   bookingReference: string

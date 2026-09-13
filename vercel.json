@@ -4,6 +4,8 @@
     { "source": "/services", "destination": "/index.html" },
     { "source": "/find-booking", "destination": "/index.html" },
     { "source": "/reminder", "destination": "/index.html" },
-    { "source": "/manage-booking/:path*", "destination": "/index.html" }
+    { "source": "/manage-booking/:path*", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/admin/:path*", "destination": "/index.html" }
   ]
 }

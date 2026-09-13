@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useEffect, useState } from "react"
 import Nav from "./components/Nav"
 import MobileBottomBar from "./components/MobileBottomBar"
 import HomePage from "./pages/HomePage"
@@ -10,6 +10,8 @@ import ReminderPreview from "./pages/manage/ReminderPreview"
 import { emptyBooking } from "./types/booking"
 import type { Appointment, BookingData } from "./types/booking"
 import { formatAppointmentTime, salonDateKey } from "./lib/time"
+
+const AdminApp = lazy(() => import("./admin/AdminApp"))
 
 export type Page = "home" | "services" | "booking" | "manage" | "find" | "reminder"
 export type BookingStep = "service" | "stylist" | "datetime" | "details" | "review" | "confirm"
@@ -53,6 +55,27 @@ const pagePaths: Record<Exclude<Page, "manage">, string> = {
 }
 
 export default function App() {
+  if (
+    window.location.pathname === "/admin" ||
+    window.location.pathname.startsWith("/admin/")
+  ) {
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-cream grid place-items-center text-[13px] text-warm-gray">
+            Loading management dashboard…
+          </div>
+        }
+      >
+        <AdminApp />
+      </Suspense>
+    )
+  }
+
+  return <CustomerApp />
+}
+
+function CustomerApp() {
   const initialRoute = routeState()
   const [page, setPage] = useState<Page>(initialRoute.page)
   const [managementToken, setManagementToken] = useState(initialRoute.token)

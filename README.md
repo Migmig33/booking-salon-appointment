@@ -23,6 +23,26 @@ For a hosted project, link the project and run `supabase db push`, then seed onl
 
 SPA hosting must rewrite `/book`, `/find-booking`, and `/manage-booking/*` requests to `index.html`.
 
+## Owner and manager dashboard
+
+The protected salon dashboard is available at `/admin/login`. It uses the same `appointments`, `customers`, `services`, `stylists`, `availability`, and `blocked_times` records as the customer booking flow. Staff mutations are validated by security-definer PostgreSQL functions, retain appointment history, and write audit records.
+
+Admin signup is intentionally not exposed. To create the first owner:
+
+1. In Supabase Dashboard, open **Authentication → Users** and manually add the owner with a confirmed email and a temporary password.
+2. In SQL Editor, assign that Auth user to the owner role:
+
+   ```sql
+   insert into public.admin_users (user_id, role, display_name)
+   select id, 'owner', 'Salon Owner'
+   from auth.users
+   where email = 'owner@example.com';
+   ```
+
+Replace the example email and display name before running the statement. Manager accounts are added the same way with role `manager`. Never add public signup to the admin login screen.
+
+The dashboard polls operational data every 30 seconds. Realtime subscriptions can be added later without changing the shared appointment model.
+
 ## Customer email notifications
 
 Booking confirmation, reschedule, cancellation, and next-day reminder emails are implemented by the `booking-email-worker` Supabase Edge Function. Brevo is the default provider, with Resend available as an alternative. Database triggers add committed appointment events to `email_deliveries`; the worker claims and sends them with retries. Provider failures do not roll back appointments.
