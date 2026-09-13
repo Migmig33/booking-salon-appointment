@@ -1,0 +1,10 @@
+project_id = "tj-hair-salon"
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[functions.booking-email-worker]
+# New Supabase publishable/secret keys are validated by @supabase/server in
+# the function itself rather than the legacy platform JWT check.
+verify_jwt = false

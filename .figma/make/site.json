@@ -1,0 +1,11 @@
+{
+  "title": "sample",
+  "description": "Streamline your hair salon experience with an intuitive website that allows customers to easily book appointments and explore services at TJ Hair Salon.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
