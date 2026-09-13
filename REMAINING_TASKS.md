@@ -21,6 +21,9 @@ This file is a handoff checklist for completing the Supabase/Brevo booking-email
 - Vercel production service resumed and the direct booking routes return HTTP 200.
 - The production frontend now includes the browser-safe Supabase configuration.
 - The hosted booking API returns 17 active services.
+- Protected owner/manager dashboard deployed at `/admin/login`.
+- Admin roles, staff-only RPCs, audit logs, notifications, and the `checked_in` status deployed in migrations `202609140002` and `202609140003`.
+- Public access to admin RPCs returns HTTP 401 while customer service and availability queries remain operational.
 
 No secret values belong in this file, GitHub, Vercel client variables, or `VITE_*` variables.
 
@@ -28,7 +31,15 @@ No secret values belong in this file, GitHub, Vercel client variables, or `VITE_
 
 Before public launch, finish the items below. Do not run `supabase db reset` against the hosted project.
 
-### 1. Test real email delivery
+### 1. Create the first owner account
+
+1. In Supabase Dashboard, open **Authentication → Users** and manually add the owner with a confirmed email and temporary password.
+2. Use the SQL statement in the README under **Owner and manager dashboard** to add that Auth user to `public.admin_users` with role `owner`.
+3. Sign in at `https://tjhairsalon.vercel.app/admin/login` and replace the temporary password.
+
+There is intentionally no public admin signup flow.
+
+### 2. Test real email delivery
 
 1. Confirm the Brevo sender email is verified.
 2. Book an appointment at `https://tjhairsalon.vercel.app/book` using an email address you can check.
@@ -51,7 +62,7 @@ Delivery statuses:
 - `sent`: accepted by Brevo
 - `failed`: retry limit reached; inspect `last_error`
 
-### 2. Configure reminder/retry scheduling
+### 3. Configure reminder/retry scheduling
 
 In Supabase Dashboard:
 
