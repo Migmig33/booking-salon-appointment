@@ -282,14 +282,14 @@ export default function AdminApp() {
       navigate={navigate}
       logout={() => void logout()}
     >
-      <main className="lg:ml-64 px-4 sm:px-7 py-7 pb-24 lg:pb-10 max-w-[1500px]">
+      <div className="w-full max-w-[1500px]">
         {error && (
           <div className="mb-5">
             <ErrorBlock message={error} />
           </div>
         )}
         {content}
-      </main>
+      </div>
     </AdminShell>
   )
 }

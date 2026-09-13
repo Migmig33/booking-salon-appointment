@@ -90,7 +90,9 @@ export function Panel({
   className?: string
 }) {
   return (
-    <div className={`border border-warm-line bg-white ${className}`}>
+    <div
+      className={`border border-warm-line/90 bg-white shadow-[0_1px_2px_rgba(26,25,22,0.035)] ${className}`}
+    >
       {children}
     </div>
   )
@@ -108,8 +110,8 @@ export function PageHeader({
   action?: ReactNode
 }) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-7">
-      <div>
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 pb-5 mb-6 lg:mb-8 border-b border-warm-line/80">
+      <div className="min-w-0">
         {eyebrow && (
           <p className="text-[10px] tracking-[0.18em] uppercase text-bronze font-semibold mb-2">
             {eyebrow}
@@ -197,7 +199,7 @@ export function AdminShell({
     navigate(nextPath)
   }
   return (
-    <div className="min-h-screen bg-cream text-charcoal">
+    <div className="min-h-screen bg-cream text-charcoal lg:pl-64">
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-charcoal text-cream flex-col z-30">
         <div className="px-7 py-7 border-b border-white/10">
           <p className="font-serif text-xl">TJ Hair Salon</p>
@@ -236,7 +238,7 @@ export function AdminShell({
         </div>
       </aside>
 
-      <header className="lg:ml-64 h-16 border-b border-warm-line bg-white flex items-center justify-between px-4 sm:px-7 sticky top-0 z-20">
+      <header className="h-16 border-b border-warm-line bg-white/95 backdrop-blur-sm flex items-center justify-between px-4 sm:px-6 lg:px-8 sticky top-0 z-20">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMenuOpen((value) => !value)}
@@ -337,7 +339,7 @@ export function AdminShell({
         </div>
       )}
 
-      <main className="lg:ml-64 px-4 sm:px-7 py-7 lg:py-9 pb-24 lg:pb-9">
+      <main className="min-w-0 px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pb-24 lg:pb-10">
         {children}
       </main>
 
