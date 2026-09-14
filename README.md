@@ -1,6 +1,8 @@
 # White-label salon booking platform
 
-> **Product direction:** This repository is the shared foundation for separately deployed, configuration-driven salon installations. TJ Hair Salon is the current installation, not a permanent product-wide brand. Read [USER_BUSINESS_RULES.md](./USER_BUSINESS_RULES.md) before changing architecture, branding, client data, deployment strategy, or legal content.
+> **Product direction:** This repository is the shared foundation for separately deployed, configuration-driven salon installations. The selected installation is the fictional **Studio Demo Salon** package for Metro Manila. Read [USER_BUSINESS_RULES.md](./USER_BUSINESS_RULES.md) before changing architecture, branding, client data, deployment strategy, or legal content.
+
+The public experience is marked **Live Demo — Sample business information**. It must use a dedicated non-production Supabase project containing fictional records only and must never point at a client installation.
 
 The existing Figma Make React/Vite interface is connected to Supabase/PostgreSQL for customer booking and appointment management. The database is the source of truth for services, add-ons, stylists, availability, blocked time, appointment conflicts, customers, and appointment status.
 
@@ -11,11 +13,11 @@ The existing Figma Make React/Vite interface is connected to Supabase/PostgreSQL
 3. Copy `.env.example` to `.env.local` and fill in the local or hosted project URL and public anon key.
 4. Restart Vite after changing environment variables.
 
-For a hosted project, link the project and run `supabase db push`, then seed only a non-production environment. The seed catalog, durations, and Monday-Saturday availability are placeholders and are not verified TJ Hair Salon business data.
+For a hosted project, link a dedicated demo project and run `supabase db push`, then seed only that non-production environment. The PHP catalog, fictional stylist, and Monday-Saturday availability are sample data for demonstrating the booking flow.
 
 ## Security and scheduling
 
-- Appointment times are stored as `timestamptz`; recurring hours are interpreted in `America/New_York` and displayed in that timezone.
+- Appointment times are stored as `timestamptz`; recurring demo hours are interpreted in `Asia/Manila` and displayed as Philippine Time.
 - PostgreSQL calculates slots from authoritative service/add-on duration, working hours, blocked time, and active appointments.
 - A GiST exclusion constraint prevents overlapping active appointments for a stylist even when simultaneous requests race.
 - Public table access is revoked. Customer reads and mutations use narrowly scoped security-definer database functions.
@@ -54,7 +56,7 @@ The reusable HTML/plain-text templates are in `supabase/functions/_shared/email-
 ### Configure and deploy
 
 1. Create a Brevo account, verify a sender email, and create a Brevo API key under Transactional → SMTP & API. A custom domain is recommended but is not required for the free sender-email setup.
-2. Copy `supabase/functions/email.env.example` to `supabase/functions/.env.email` (it is ignored by Git), then fill in `PUBLIC_SITE_URL`, `BREVO_API_KEY`, `EMAIL_FROM_NAME`, and `EMAIL_FROM_ADDRESS`.
+2. Copy `supabase/functions/email.env.example` to `supabase/functions/.env.email` (it is ignored by Git), then fill in the `BUSINESS_*`, `PUBLIC_SITE_URL`, `BREVO_API_KEY`, `EMAIL_FROM_NAME`, and `EMAIL_FROM_ADDRESS` values for the selected installation.
 3. Link and deploy the Supabase project:
 
    ```sh
@@ -64,7 +66,7 @@ The reusable HTML/plain-text templates are in `supabase/functions/_shared/email-
    supabase functions deploy booking-email-worker --no-verify-jwt
    ```
 
-4. In Supabase Dashboard → Integrations → Cron, schedule the `booking-email-worker` Edge Function at least every five minutes. The scheduled invocation should use a Supabase secret API key. Each run also safely enqueues tomorrow's reminders in `America/New_York` before processing the outbox.
+4. In Supabase Dashboard → Integrations → Cron, schedule the `booking-email-worker` Edge Function at least every five minutes. The scheduled invocation should use a Supabase secret API key. Each run also safely enqueues tomorrow's reminders in `Asia/Manila` before processing the outbox.
 
 Never put `BREVO_API_KEY`, `RESEND_API_KEY`, or a Supabase secret/service-role key in `.env.local`, `VITE_*` variables, frontend source, or a public hosting provider's client environment.
 

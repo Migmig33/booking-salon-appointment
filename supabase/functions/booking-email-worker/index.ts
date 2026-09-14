@@ -36,7 +36,8 @@ function emailProviderName() {
 
 function brevoProvider(): EmailProvider {
   const apiKey = requiredEnvironment("BREVO_API_KEY")
-  const senderName = Deno.env.get("EMAIL_FROM_NAME")?.trim() || "TJ Hair Salon"
+  const senderName =
+    Deno.env.get("EMAIL_FROM_NAME")?.trim() || "Studio Demo Salon"
   const senderEmail = requiredEnvironment("EMAIL_FROM_ADDRESS")
 
   return {
@@ -55,7 +56,7 @@ function brevoProvider(): EmailProvider {
           htmlContent: email.html,
           textContent: email.text,
           headers: { idempotencyKey: deliveryId },
-          tags: ["tj-appointment"],
+          tags: ["studio-demo-appointment"],
         }),
       })
 

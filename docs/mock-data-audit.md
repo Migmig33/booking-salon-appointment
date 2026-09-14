@@ -13,8 +13,8 @@
 
 The obsolete `src/data/services.ts` module and all production booking time arrays were removed after the database-backed consumers were in place.
 
-## Intentionally retained presentation content
+## Demo presentation content
 
-`HomePage.tsx` still contains the Figma-generated gallery images, marketing service-preview cards, and testimonial-theme cards. These are presentation/marketing content, not a second booking dataset, and remain in place to preserve the approved design. They can move to a future CMS without changing booking authority.
+`HomePage.tsx` contains stock gallery images, marketing service-preview cards, and explicitly illustrative feedback cards. They are demo presentation content, not a second booking dataset or claims about a real salon. They can move to a future CMS without changing booking authority.
 
-The salon contact/location strings used by customer actions are centralized in `src/config/salon.ts`. Seed durations, availability, and service descriptions are explicitly development-only and must be verified before production use.
+The demo identity, location, locale, timezone, currency, contact address, and disclosure used by customer actions are centralized in `src/config/salon.ts`. The PHP catalog, fictional stylist, availability, descriptions, and prices in `supabase/seed.sql` are explicitly demo-only and must be replaced with client-approved data before production use.

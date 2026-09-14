@@ -1,6 +1,6 @@
 import type { BookingData, BookingStep } from "../../App"
 import { durationLabel } from "../../lib/time"
-import { CANCELLATION_POLICY } from "../../config/salon"
+import { CANCELLATION_POLICY, SALON_LOCALE } from "../../config/salon"
 
 interface Props {
   booking: BookingData
@@ -14,7 +14,7 @@ interface Props {
 function formatDate(dateStr: string | null) {
   if (!dateStr) return "Not selected"
   const d = new Date(dateStr + "T00:00:00")
-  return d.toLocaleDateString("en-US", {
+  return d.toLocaleDateString(SALON_LOCALE, {
     weekday: "long",
     month: "long",
     day: "numeric",

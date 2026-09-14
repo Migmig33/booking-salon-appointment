@@ -21,9 +21,10 @@ import {
   CANCELLATION_POLICY,
   SALON_ADDRESS,
   SALON_DIRECTIONS_URL,
+  SALON_EMAIL_DISPLAY,
+  SALON_EMAIL_LINK,
   SALON_NAME,
-  SALON_PHONE_DISPLAY,
-  SALON_PHONE_LINK,
+  SALON_TIME_ZONE_LABEL,
 } from "../../config/salon"
 
 const CANCELLATION_WINDOW_MS = 24 * 60 * 60 * 1000
@@ -341,10 +342,10 @@ export default function ManageAppointment({
                 {SALON_ADDRESS}
               </p>
               <a
-                href={SALON_PHONE_LINK}
+                href={SALON_EMAIL_LINK}
                 className="text-[12px] text-bronze hover:text-charcoal transition-colors mt-0.5 block"
               >
-                {SALON_PHONE_DISPLAY}
+                {SALON_EMAIL_DISPLAY}
               </a>
             </div>
           </div>
@@ -358,7 +359,11 @@ export default function ManageAppointment({
                 <p className="text-[12px] text-warm-gray leading-relaxed">
                   {CANCELLATION_POLICY}
                   {!cancellationAllowed && (
-                    <> The online cancellation window for this appointment has closed.</>
+                    <>
+                      {" "}
+                      The online cancellation window for this appointment has
+                      closed.
+                    </>
                   )}
                 </p>
               </div>
@@ -394,13 +399,13 @@ export default function ManageAppointment({
                   rel="noopener noreferrer"
                   className="flex-1 border border-warm-line text-charcoal text-[13px] font-medium py-3 hover:border-charcoal transition-all tracking-wide text-center"
                 >
-                  Get Directions
+                  View Location
                 </a>
                 <a
-                  href={SALON_PHONE_LINK}
+                  href={SALON_EMAIL_LINK}
                   className="flex-1 border border-warm-line text-charcoal text-[13px] font-medium py-3 hover:border-charcoal transition-all tracking-wide text-center"
                 >
-                  Call Salon
+                  Email Demo Contact
                 </a>
               </div>
             </div>
@@ -415,10 +420,10 @@ export default function ManageAppointment({
                 Book Another Appointment
               </button>
               <a
-                href={SALON_PHONE_LINK}
+                href={SALON_EMAIL_LINK}
                 className="border border-warm-line text-charcoal text-[13px] font-medium px-7 py-3 hover:border-charcoal transition-all tracking-wide text-center"
               >
-                Call Salon
+                Email Demo Contact
               </a>
             </div>
           )}
@@ -544,7 +549,7 @@ export default function ManageAppointment({
               Select New Time
             </p>
             <p className="text-[11px] text-warm-gray italic mb-4">
-              All times are shown in New York time.
+              All times are shown in {SALON_TIME_ZONE_LABEL}.
             </p>
             {slotsLoading && (
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -837,12 +842,12 @@ export default function ManageAppointment({
             </button>
           )}
           <a
-            href={cancelled ? SALON_PHONE_LINK : SALON_DIRECTIONS_URL}
+            href={cancelled ? SALON_EMAIL_LINK : SALON_DIRECTIONS_URL}
             target={cancelled ? undefined : "_blank"}
             rel={cancelled ? undefined : "noopener noreferrer"}
             className="border border-warm-line text-charcoal text-[13px] font-medium px-7 py-3 hover:border-charcoal text-center"
           >
-            {cancelled ? "Call Salon" : "Get Directions"}
+            {cancelled ? "Email Demo Contact" : "View Location"}
           </a>
         </div>
       </div>
@@ -857,7 +862,7 @@ export default function ManageAppointment({
             onClick={() => navigate("home")}
             className="flex items-center gap-1.5 text-[12px] text-warm-gray hover:text-charcoal transition-colors"
           >
-            &larr; TJ Hair Salon
+            &larr; {SALON_NAME}
           </button>
           <span className="text-[11px] tracking-[0.15em] uppercase text-warm-gray font-medium">
             Manage Appointment

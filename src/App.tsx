@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react"
 import Nav from "./components/Nav"
 import MobileBottomBar from "./components/MobileBottomBar"
+import DemoNotice from "./components/DemoNotice"
 import HomePage from "./pages/HomePage"
 import ServicesPage from "./pages/ServicesPage"
 import BookingLayout from "./pages/booking/BookingLayout"
@@ -149,6 +150,7 @@ function CustomerApp() {
         startBooking={startBooking}
         inBooking={inBookingFlow}
       />
+      <DemoNotice />
 
       {page === "home" && (
         <HomePage navigate={navigate} startBooking={startBooking} />

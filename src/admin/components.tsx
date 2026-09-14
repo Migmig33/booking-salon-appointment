@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react"
 import { formatAppointmentDateShort, formatAppointmentTime } from "../lib/time"
+import { DEMO_NOTICE, SALON_NAME, SALON_TIME_ZONE_LABEL } from "../config/salon"
 import type {
   AdminAppointment,
   AdminAppointmentStatus,
@@ -202,7 +203,7 @@ export function AdminShell({
     <div className="min-h-screen bg-cream text-charcoal lg:pl-64">
       <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-charcoal text-cream flex-col z-30">
         <div className="px-7 py-7 border-b border-white/10">
-          <p className="font-serif text-xl">TJ Hair Salon</p>
+          <p className="font-serif text-xl">{SALON_NAME}</p>
           <p className="text-[10px] uppercase tracking-[0.18em] text-cream/50 mt-1">
             Management
           </p>
@@ -248,9 +249,9 @@ export function AdminShell({
             ☰
           </button>
           <div>
-            <p className="font-serif text-lg lg:hidden">TJ Hair Salon</p>
+            <p className="font-serif text-lg lg:hidden">{SALON_NAME}</p>
             <p className="hidden sm:block text-[11px] text-warm-gray">
-              All times shown in America/New_York
+              All times shown in {SALON_TIME_ZONE_LABEL} · {DEMO_NOTICE}
             </p>
           </div>
         </div>

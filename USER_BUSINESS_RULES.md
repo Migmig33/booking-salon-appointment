@@ -2,9 +2,9 @@
 
 ## Why this product exists
 
-This repository is the reusable foundation for selling customized salon booking websites. TJ Hair Salon is the current installation and first working configuration; it is not intended to be a permanent product-wide brand.
+This repository is the reusable foundation for selling customized salon booking websites. Studio Demo Salon is the selected fictional demonstration installation; it is not intended to be a permanent product-wide brand.
 
-If TJ Hair Salon does not purchase the system, the application can be rebranded for another prospective client without rebuilding the booking engine or management dashboard. Client-owned customer data, private content, credentials, and licensed assets must never be reused for another client.
+The demonstration installation can be rebranded for a prospective client without rebuilding the booking engine or management dashboard. Client-owned customer data, private content, credentials, and licensed assets must never be reused for another client or demo.
 
 Every agent or developer working in this repository must preserve this product direction.
 
@@ -87,7 +87,7 @@ clients/
     theme tokens
     approved content and assets
     catalog seed
-  tj-hair-salon/
+  client-example/
     business configuration
     theme tokens
     approved content and assets
@@ -140,11 +140,11 @@ Unless the user explicitly changes scope:
 
 ## Current installation and known productization gaps
 
-The repository currently runs as the TJ Hair Salon installation. The booking system and protected admin dashboard are functional, but the white-label conversion is not finished.
+The repository currently selects the fictional Studio Demo Salon package. The booking system and protected admin dashboard are functional, while additional provisioning automation remains future productization work.
 
 Known follow-up work includes:
 
-- Consolidate remaining TJ-specific text, contact information, metadata, and imagery into one selected client configuration.
+- Continue consolidating installation-specific text, contact information, metadata, and imagery into one selected client configuration.
 - Move theme choices into a client-selectable token layer while preserving accessible contrast.
 - Create client-specific catalog/availability seed packages rather than one generic seed.
 - Automate new installation provisioning, validation, migration, and deployment as sales grow.

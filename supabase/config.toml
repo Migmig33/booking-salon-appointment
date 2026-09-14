@@ -1,4 +1,4 @@
-project_id = "tj-hair-salon"
+project_id = "studio-demo-salon"
 
 [db.seed]
 enabled = true

@@ -323,8 +323,8 @@ as $$
   ),
   candidates as (
     select
-      (slot.local_start at time zone 'America/New_York') as candidate_start,
-      (slot.local_start at time zone 'America/New_York') + make_interval(mins => d.minutes) as candidate_end,
+      (slot.local_start at time zone 'Asia/Manila') as candidate_start,
+      (slot.local_start at time zone 'Asia/Manila') + make_interval(mins => d.minutes) as candidate_end,
       st.id as candidate_stylist_id,
       st.name as candidate_stylist_name
     from duration d
@@ -528,7 +528,7 @@ begin
     p_service_id,
     coalesce(p_addon_ids, '{}'::uuid[]),
     p_stylist_id,
-    (p_start_at at time zone 'America/New_York')::date,
+    (p_start_at at time zone 'Asia/Manila')::date,
     null
   ) slots
   where slots.start_at = p_start_at
@@ -544,7 +544,7 @@ begin
 
   v_token := encode(gen_random_bytes(32), 'hex');
   loop
-    v_reference := 'TJ-' || lpad((floor(random() * 100000))::integer::text, 5, '0');
+    v_reference := 'SDS-' || lpad((floor(random() * 100000))::integer::text, 5, '0');
     exit when not exists (
       select 1 from public.appointments where booking_reference = v_reference
     );
@@ -671,7 +671,7 @@ begin
     v_appointment.service_id,
     v_addons,
     v_appointment.stylist_id,
-    (p_start_at at time zone 'America/New_York')::date,
+    (p_start_at at time zone 'Asia/Manila')::date,
     v_appointment.id
   ) slots
   where slots.start_at = p_start_at;

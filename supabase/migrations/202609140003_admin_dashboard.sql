@@ -11,10 +11,10 @@ create table public.admin_users (
 
 create table public.salon_settings (
   id smallint primary key default 1 check (id = 1),
-  salon_name text not null default 'TJ Hair Salon',
-  phone text not null default '(708) 808-9910',
-  address text not null default '47-42 Bell Blvd, Bayside, NY 11361',
-  booking_timezone text not null default 'America/New_York',
+  salon_name text not null default 'Studio Demo Salon',
+  phone text not null default 'Demo contact unavailable',
+  address text not null default 'Metro Manila, Philippines',
+  booking_timezone text not null default 'Asia/Manila',
   booking_window_days integer not null default 60 check (booking_window_days between 1 and 365),
   minimum_lead_minutes integer not null default 0 check (minimum_lead_minutes between 0 and 10080),
   cancellation_notice_hours integer not null default 24 check (cancellation_notice_hours between 0 and 168),
@@ -212,9 +212,9 @@ security definer
 set search_path = public
 as $$
 declare
-  v_date date := coalesce(p_date, (now() at time zone 'America/New_York')::date);
-  v_start timestamptz := v_date::timestamp at time zone 'America/New_York';
-  v_end timestamptz := (v_date + 1)::timestamp at time zone 'America/New_York';
+  v_date date := coalesce(p_date, (now() at time zone 'Asia/Manila')::date);
+  v_start timestamptz := v_date::timestamp at time zone 'Asia/Manila';
+  v_end timestamptz := (v_date + 1)::timestamp at time zone 'Asia/Manila';
 begin
   perform public.admin_assert_staff(false);
   return jsonb_build_object(
@@ -445,7 +445,7 @@ begin
   select slots.end_at, slots.stylist_id into v_end_at, v_new_stylist_id
   from public.booking_calculate_slots(
     v_appointment.service_id, v_addons, coalesce(p_stylist_id, v_appointment.stylist_id),
-    (p_start_at at time zone 'America/New_York')::date, v_appointment.id
+    (p_start_at at time zone 'Asia/Manila')::date, v_appointment.id
   ) slots where slots.start_at = p_start_at limit 1;
   if v_end_at is null then raise exception 'SLOT_TAKEN'; end if;
 
@@ -519,13 +519,13 @@ begin
   select slots.stylist_id, slots.end_at into v_allocated_stylist_id, v_end_at
   from public.booking_calculate_slots(
     p_service_id, coalesce(p_addon_ids, '{}'::uuid[]), p_stylist_id,
-    (p_start_at at time zone 'America/New_York')::date, null
+    (p_start_at at time zone 'Asia/Manila')::date, null
   ) slots where slots.start_at = p_start_at limit 1;
   if v_allocated_stylist_id is null then raise exception 'SLOT_TAKEN'; end if;
 
   v_token := encode(gen_random_bytes(32), 'hex');
   loop
-    v_reference := 'TJ-' || lpad((floor(random() * 100000))::integer::text, 5, '0');
+    v_reference := 'SDS-' || lpad((floor(random() * 100000))::integer::text, 5, '0');
     exit when not exists (select 1 from public.appointments where booking_reference = v_reference);
   end loop;
   begin
@@ -865,7 +865,7 @@ set search_path = public
 as $$
 begin
   perform public.admin_assert_staff(true);
-  if p_booking_timezone <> 'America/New_York' then raise exception 'UNSUPPORTED_TIMEZONE'; end if;
+  if p_booking_timezone <> 'Asia/Manila' then raise exception 'UNSUPPORTED_TIMEZONE'; end if;
   if p_cancellation_notice_hours <> 24 then raise exception 'CANCELLATION_POLICY_FIXED'; end if;
   update public.salon_settings set salon_name = trim(p_salon_name), phone = trim(p_phone), address = trim(p_address),
     booking_timezone = p_booking_timezone, booking_window_days = p_booking_window_days,

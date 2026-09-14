@@ -108,7 +108,7 @@ export default function StepDetails({
             <input
               type="tel"
               className={inputClass}
-              placeholder="(555) 000-0000"
+              placeholder="09XX XXX XXXX"
               value={c.phone}
               onChange={(e) => update("phone", e.target.value)}
               autoComplete="tel"

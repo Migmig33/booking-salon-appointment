@@ -1,6 +1,7 @@
 import { useState } from "react"
 import type { Page } from "../../App"
 import { BookingApiError, findBooking } from "../../lib/bookingApi"
+import { BOOKING_REFERENCE_EXAMPLE, SALON_NAME } from "../../config/salon"
 
 interface Props {
   navigate: (page: Page) => void
@@ -43,19 +44,34 @@ export default function FindBooking({ navigate, openManagement }: Props) {
             onClick={() => navigate("home")}
             className="flex items-center gap-1.5 text-[12px] text-warm-gray hover:text-charcoal transition-colors"
           >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
-            TJ Hair Salon
+            {SALON_NAME}
           </button>
         </div>
       </div>
 
       <div className="max-w-lg mx-auto px-5 py-14 lg:py-20">
-        <span className="text-[11px] tracking-[0.22em] uppercase text-bronze font-medium">Your Appointment</span>
-        <h1 className="font-serif text-[34px] lg:text-[42px] text-charcoal mt-2 mb-3">Find My Booking</h1>
+        <span className="text-[11px] tracking-[0.22em] uppercase text-bronze font-medium">
+          Your Appointment
+        </span>
+        <h1 className="font-serif text-[34px] lg:text-[42px] text-charcoal mt-2 mb-3">
+          Find My Booking
+        </h1>
         <p className="text-[14px] text-charcoal-mid leading-relaxed mb-8">
-          Enter your booking reference and the email address or phone number used when booking.
+          Enter your booking reference and the email address or phone number
+          used when booking.
         </p>
 
         <form onSubmit={submit} className="bg-cream-dark p-6 lg:p-8 space-y-5">
@@ -66,8 +82,10 @@ export default function FindBooking({ navigate, openManagement }: Props) {
             <input
               className={inputClass}
               value={reference}
-              onChange={(event) => setReference(event.target.value.toUpperCase())}
-              placeholder="TJ-48291"
+              onChange={(event) =>
+                setReference(event.target.value.toUpperCase())
+              }
+              placeholder={BOOKING_REFERENCE_EXAMPLE}
               autoComplete="off"
               maxLength={20}
             />
@@ -87,7 +105,10 @@ export default function FindBooking({ navigate, openManagement }: Props) {
           </div>
 
           {error && (
-            <div role="alert" className="border border-bronze/30 bg-bronze/[0.05] px-4 py-3 text-[12px] text-charcoal-mid leading-relaxed">
+            <div
+              role="alert"
+              className="border border-bronze/30 bg-bronze/[0.05] px-4 py-3 text-[12px] text-charcoal-mid leading-relaxed"
+            >
               {error}
             </div>
           )}

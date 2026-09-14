@@ -19,6 +19,7 @@ import CustomersPage, { CustomerProfilePage } from "./pages/CustomersPage"
 import { ServicesPage, StylistsPage } from "./pages/CatalogPages"
 import AvailabilityPage from "./pages/AvailabilityPage"
 import SettingsPage from "./pages/SettingsPage"
+import { DEMO_NOTICE, SALON_NAME, SALON_TIME_ZONE_LABEL } from "../config/salon"
 
 function AdminLogin({
   onLogin,
@@ -52,7 +53,7 @@ function AdminLogin({
     <div className="min-h-screen bg-cream grid lg:grid-cols-[1fr_1fr]">
       <div className="hidden lg:flex bg-charcoal text-cream p-12 flex-col justify-between">
         <div>
-          <p className="font-serif text-3xl">TJ Hair Salon</p>
+          <p className="font-serif text-3xl">{SALON_NAME}</p>
           <p className="text-[11px] uppercase tracking-[0.2em] text-cream/50 mt-2">
             Owner & Manager Dashboard
           </p>
@@ -67,12 +68,15 @@ function AdminLogin({
           </p>
         </div>
         <p className="text-[11px] text-cream/40">
-          Private staff system · America/New_York
+          Private demo staff system · {SALON_TIME_ZONE_LABEL}
         </p>
       </div>
       <div className="flex items-center justify-center p-5">
         <Panel className="w-full max-w-md p-7 sm:p-9 shadow-sm">
-          <p className="font-serif text-2xl lg:hidden mb-7">TJ Hair Salon</p>
+          <p className="font-serif text-2xl lg:hidden mb-7">{SALON_NAME}</p>
+          <p className="text-[10px] uppercase tracking-[0.14em] text-warm-gray mb-4">
+            {DEMO_NOTICE}
+          </p>
           <p className="text-[10px] uppercase tracking-[0.18em] text-bronze font-semibold">
             Protected area
           </p>

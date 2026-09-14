@@ -191,12 +191,12 @@ declare
   v_count integer := 0;
 begin
   for v_appointment in
-    select ap.id, (ap.start_at at time zone 'America/New_York')::date as local_date
+    select ap.id, (ap.start_at at time zone 'Asia/Manila')::date as local_date
     from public.appointments ap
     where ap.status in ('confirmed', 'rescheduled')
       and ap.start_at > p_now
-      and (ap.start_at at time zone 'America/New_York')::date
-        = (p_now at time zone 'America/New_York')::date + 1
+      and (ap.start_at at time zone 'Asia/Manila')::date
+        = (p_now at time zone 'Asia/Manila')::date + 1
   loop
     perform public.email_queue_appointment_event(
       v_appointment.id,

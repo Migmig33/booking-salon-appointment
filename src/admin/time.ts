@@ -1,4 +1,4 @@
-import { SALON_TIME_ZONE } from "../config/salon"
+import { SALON_LOCALE, SALON_TIME_ZONE } from "../config/salon"
 
 export function adminDateKey(value = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -32,10 +32,11 @@ export function monthBounds(dateKey: string) {
 }
 
 export function dateRangeUtc(startDate: string, endDateExclusive: string) {
-  // Noon probes make the New York UTC offset deterministic on DST boundaries.
+  // A noon probe keeps offset conversion deterministic if an installation uses
+  // a timezone with daylight-saving transitions.
   const zoned = (dateKey: string) => {
     const noonUtc = new Date(`${dateKey}T12:00:00Z`)
-    const parts = new Intl.DateTimeFormat("en-US", {
+    const parts = new Intl.DateTimeFormat(SALON_LOCALE, {
       timeZone: SALON_TIME_ZONE,
       timeZoneName: "longOffset",
     }).formatToParts(noonUtc)
@@ -43,7 +44,7 @@ export function dateRangeUtc(startDate: string, endDateExclusive: string) {
     const match = offset?.match(/GMT([+-])(\d{2}):(\d{2})/)
     const minutes = match
       ? (match[1] === "+" ? 1 : -1) * (Number(match[2]) * 60 + Number(match[3]))
-      : -300
+      : 480
     return new Date(
       new Date(`${dateKey}T00:00:00Z`).getTime() - minutes * 60000,
     ).toISOString()
@@ -62,7 +63,7 @@ export function localInputToUtc(value: string) {
 }
 
 export function formatAdminDate(value: string, withYear = false) {
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(SALON_LOCALE, {
     timeZone: SALON_TIME_ZONE,
     weekday: "short",
     month: "short",
@@ -72,7 +73,7 @@ export function formatAdminDate(value: string, withYear = false) {
 }
 
 export function formatAdminTime(value: string) {
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(SALON_LOCALE, {
     timeZone: SALON_TIME_ZONE,
     hour: "numeric",
     minute: "2-digit",
@@ -83,7 +84,7 @@ export function formatDateKeyLabel(
   dateKey: string,
   options?: Intl.DateTimeFormatOptions,
 ) {
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(SALON_LOCALE, {
     timeZone: "UTC",
     weekday: "short",
     month: "short",

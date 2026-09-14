@@ -3,10 +3,13 @@ import type { Page } from "../App"
 import Footer from "../components/Footer"
 import {
   CANCELLATION_POLICY,
+  DEMO_NOTICE,
   SALON_ADDRESS,
+  SALON_CURRENCY_CODE,
+  SALON_CURRENCY_SYMBOL,
+  SALON_EMAIL_DISPLAY,
+  SALON_EMAIL_LINK,
   SALON_NAME,
-  SALON_PHONE_DISPLAY,
-  SALON_PHONE_LINK,
 } from "../config/salon"
 
 interface LegalPageProps {
@@ -61,6 +64,10 @@ function LegalPage({
             <p className="text-[11px] text-cream/40 mt-6">
               Last updated September 14, 2026
             </p>
+            <p className="text-[11px] text-cream/50 mt-2">
+              {DEMO_NOTICE}. This draft illustrates where client-approved legal
+              content appears and is not legal advice for an operating salon.
+            </p>
           </div>
         </header>
 
@@ -71,10 +78,10 @@ function LegalPage({
                 Questions?
               </p>
               <a
-                href={SALON_PHONE_LINK}
+                href={SALON_EMAIL_LINK}
                 className="block text-[14px] text-charcoal hover:text-bronze mt-3 transition-colors"
               >
-                {SALON_PHONE_DISPLAY}
+                {SALON_EMAIL_DISPLAY}
               </a>
               <p className="text-[12px] leading-5 text-warm-gray mt-2">
                 {SALON_ADDRESS}
@@ -230,12 +237,12 @@ export function PrivacyPolicyPage(props: LegalPageProps) {
 
       <PolicySection title="Contact us">
         <p>
-          For privacy questions or requests, call{" "}
+          For questions about this sample policy, email{" "}
           <a
-            href={SALON_PHONE_LINK}
+            href={SALON_EMAIL_LINK}
             className="text-bronze underline underline-offset-4"
           >
-            {SALON_PHONE_DISPLAY}
+            {SALON_EMAIL_DISPLAY}
           </a>{" "}
           or write to {SALON_NAME}, {SALON_ADDRESS}.
         </p>
@@ -296,7 +303,8 @@ export function BookingTermsPage(props: LegalPageProps) {
           or informational descriptions. Hair length, condition, product use,
           additional work, and consultation results may affect the final
           service, duration, and price. The salon will confirm final pricing
-          directly.
+          directly. Demo prices are displayed in {SALON_CURRENCY_SYMBOL} and use{" "}
+          {SALON_CURRENCY_CODE}.
         </p>
         <p>
           This website does not accept deposits, cards, or other online
@@ -309,9 +317,9 @@ export function BookingTermsPage(props: LegalPageProps) {
         <p>{CANCELLATION_POLICY}</p>
         <p>
           Online cancellation becomes unavailable inside that 24-hour window.
-          Please call the salon as soon as possible if you need assistance with
-          a late change. Contacting the salon does not guarantee that the policy
-          will be waived.
+          Please contact the salon as soon as possible if you need assistance
+          with a late change. Contacting the salon does not guarantee that the
+          policy will be waived.
         </p>
         <p>
           A rescheduled or cancelled appointment remains in salon records with
@@ -377,10 +385,10 @@ export function BookingTermsPage(props: LegalPageProps) {
         <p>
           Questions about a booking or these terms can be directed to{" "}
           <a
-            href={SALON_PHONE_LINK}
+            href={SALON_EMAIL_LINK}
             className="text-bronze underline underline-offset-4"
           >
-            {SALON_PHONE_DISPLAY}
+            {SALON_EMAIL_DISPLAY}
           </a>{" "}
           or {SALON_NAME}, {SALON_ADDRESS}.
         </p>

@@ -1,4 +1,12 @@
 import type { Page } from "../App"
+import {
+  DEMO_NOTICE,
+  SALON_BUSINESS_TYPE,
+  SALON_EMAIL_DISPLAY,
+  SALON_EMAIL_LINK,
+  SALON_LOCATION,
+  SALON_NAME,
+} from "../config/salon"
 
 interface Props {
   navigate: (p: Page) => void
@@ -18,15 +26,15 @@ export default function Footer({ navigate, startBooking }: Props) {
           <div className="md:col-span-1">
             <button onClick={() => navigate("home")} className="text-left mb-4">
               <span className="font-serif text-xl text-cream font-medium tracking-wide block">
-                TJ Hair Salon
+                {SALON_NAME}
               </span>
               <span className="text-[10px] tracking-[0.18em] uppercase text-cream/50 mt-0.5 block">
-                Bayside, Queens
+                {SALON_LOCATION}
               </span>
             </button>
             <p className="text-sm leading-relaxed text-cream/60 max-w-[260px]">
-              Personalized haircuts, color, perms, and styling in the heart of
-              Bayside, New York.
+              A fictional {SALON_BUSINESS_TYPE.toLowerCase()} experience built
+              to demonstrate online salon booking in the Philippines.
             </p>
           </div>
 
@@ -95,15 +103,15 @@ export default function Footer({ navigate, startBooking }: Props) {
             </p>
             <address className="not-italic space-y-2">
               <p className="text-sm text-cream/70 leading-relaxed">
-                47-42 Bell Blvd
+                {SALON_LOCATION}
                 <br />
-                Bayside, NY 11361
+                No physical demo branch
               </p>
               <a
-                href="tel:7088089910"
+                href={SALON_EMAIL_LINK}
                 className="text-sm text-cream/70 hover:text-cream transition-colors block"
               >
-                (708) 808-9910
+                {SALON_EMAIL_DISPLAY}
               </a>
             </address>
             <button
@@ -117,8 +125,7 @@ export default function Footer({ navigate, startBooking }: Props) {
 
         <div className="mt-12 pt-6 border-t border-cream/10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
           <p className="text-xs text-cream/30">
-            &copy; {new Date().getFullYear()} TJ Hair Salon. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} {SALON_NAME}. Demonstration only.
           </p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <button
@@ -133,9 +140,7 @@ export default function Footer({ navigate, startBooking }: Props) {
             >
               Booking Terms
             </button>
-            <p className="text-xs text-cream/20">
-              47-42 Bell Blvd, Bayside, NY 11361
-            </p>
+            <p className="text-xs text-cream/20">{DEMO_NOTICE}</p>
           </div>
         </div>
       </div>

@@ -1,26 +1,26 @@
-import { SALON_TIME_ZONE } from "../config/salon"
+import { SALON_LOCALE, SALON_TIME_ZONE } from "../config/salon"
 
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
+const dateFormatter = new Intl.DateTimeFormat(SALON_LOCALE, {
   timeZone: SALON_TIME_ZONE,
   weekday: "long",
   month: "long",
   day: "numeric",
 })
 
-const shortDateFormatter = new Intl.DateTimeFormat("en-US", {
+const shortDateFormatter = new Intl.DateTimeFormat(SALON_LOCALE, {
   timeZone: SALON_TIME_ZONE,
   weekday: "short",
   month: "short",
   day: "numeric",
 })
 
-const timeFormatter = new Intl.DateTimeFormat("en-US", {
+const timeFormatter = new Intl.DateTimeFormat(SALON_LOCALE, {
   timeZone: SALON_TIME_ZONE,
   hour: "numeric",
   minute: "2-digit",
 })
 
-const hourFormatter = new Intl.DateTimeFormat("en-US", {
+const hourFormatter = new Intl.DateTimeFormat(SALON_LOCALE, {
   timeZone: SALON_TIME_ZONE,
   hour: "numeric",
   hourCycle: "h23",
@@ -49,7 +49,8 @@ export function salonDateKey(value: string) {
     month: "2-digit",
     day: "2-digit",
   }).formatToParts(new Date(value))
-  const part = (type: string) => parts.find((item) => item.type === type)?.value ?? ""
+  const part = (type: string) =>
+    parts.find((item) => item.type === type)?.value ?? ""
   return `${part("year")}-${part("month")}-${part("day")}`
 }
 
@@ -57,7 +58,9 @@ export function durationLabel(minutes: number, prefix = "") {
   if (minutes < 60) return `${prefix}${minutes} min`
   const hours = Math.floor(minutes / 60)
   const remainder = minutes % 60
-  return remainder ? `${prefix}${hours} hr ${remainder} min` : `${prefix}${hours} ${hours === 1 ? "hr" : "hrs"}`
+  return remainder
+    ? `${prefix}${hours} hr ${remainder} min`
+    : `${prefix}${hours} ${hours === 1 ? "hr" : "hrs"}`
 }
 
 export function getUpcomingSalonDates(count = 14) {
@@ -67,8 +70,11 @@ export function getUpcomingSalonDates(count = 14) {
     month: "2-digit",
     day: "2-digit",
   }).formatToParts(new Date())
-  const part = (type: string) => Number(todayParts.find((item) => item.type === type)?.value)
-  const cursor = new Date(Date.UTC(part("year"), part("month") - 1, part("day")))
+  const part = (type: string) =>
+    Number(todayParts.find((item) => item.type === type)?.value)
+  const cursor = new Date(
+    Date.UTC(part("year"), part("month") - 1, part("day")),
+  )
 
   return Array.from({ length: count }, (_, index) => {
     const date = new Date(cursor)
@@ -77,9 +83,12 @@ export function getUpcomingSalonDates(count = 14) {
   })
 }
 
-export function formatDateKey(dateKey: string, style: "long" | "short" = "long") {
+export function formatDateKey(
+  dateKey: string,
+  style: "long" | "short" = "long",
+) {
   const date = new Date(`${dateKey}T12:00:00Z`)
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(SALON_LOCALE, {
     timeZone: "UTC",
     weekday: style === "long" ? "long" : "short",
     month: style === "long" ? "long" : "short",
@@ -90,8 +99,14 @@ export function formatDateKey(dateKey: string, style: "long" | "short" = "long")
 export function dateKeyParts(dateKey: string) {
   const date = new Date(`${dateKey}T12:00:00Z`)
   return {
-    weekday: new Intl.DateTimeFormat("en-US", { timeZone: "UTC", weekday: "short" }).format(date),
+    weekday: new Intl.DateTimeFormat(SALON_LOCALE, {
+      timeZone: "UTC",
+      weekday: "short",
+    }).format(date),
     day: date.getUTCDate(),
-    month: new Intl.DateTimeFormat("en-US", { timeZone: "UTC", month: "short" }).format(date),
+    month: new Intl.DateTimeFormat(SALON_LOCALE, {
+      timeZone: "UTC",
+      month: "short",
+    }).format(date),
   }
 }
