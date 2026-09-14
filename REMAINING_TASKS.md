@@ -9,7 +9,7 @@ This handoff applies only to the fictional, non-production Philippine demo insta
 - Public UI, metadata, email templates, database defaults, reference generation, and documentation use the Studio Demo Salon identity.
 - Demo scheduling uses `Asia/Manila`; sample catalog prices use PHP / ₱.
 - Stock gallery imagery, illustrative feedback, fictional staff, and sample business information are clearly disclosed.
-- Browser source no longer embeds a hosted Supabase project URL or publishable key.
+- Browser source currently retains the existing browser-safe production Supabase URL and publishable key as a fallback because Vercel does not define the `VITE_SUPABASE_*` values. Environment variables override the fallback.
 
 ## Required before sharing a live URL
 

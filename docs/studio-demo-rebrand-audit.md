@@ -23,11 +23,11 @@ Studio Demo Salon is fictional. The source does not define a street address, phy
 - Supabase project configuration, schema defaults, booking-reference generation, all scheduling timezone literals, reminder enqueueing, demo seed data, and the forward conversion migration
 - Transactional email subjects, HTML/plain-text bodies, sender fallback, contact actions, timezone formatting, demo disclosure, and documented environment values
 - README, deployment handoff, business rules, and mock-data documentation
-- Hosted-project identifiers, deployment URLs, embedded browser credentials, old contact information, and former-client-specific staff/review claims
+- Hosted-project identifiers, deployment URLs, browser credentials, old contact information, and former-client-specific staff/review claims
 
 ## Data and deployment boundary
 
-The tracked source contains no hosted Supabase URL or publishable key. The ignored local `.env.local` still points at a pre-demo hosted project so the source conversion does not silently destroy or migrate external data. Replace it with a dedicated demo project before sharing a live preview. Apply `202609140004_studio_demo_installation.sql` to convert an existing demo-safe database, or create a fresh demo database from all migrations and `supabase/seed.sql`.
+The tracked browser source currently retains the existing production Supabase URL and browser-safe publishable key as a fallback because the Vercel project does not define `VITE_SUPABASE_URL` or `VITE_SUPABASE_ANON_KEY`. Environment variables take priority. Replace the fallback with a dedicated demo project before sharing the installation beyond its current deployment. Apply `202609140004_studio_demo_installation.sql` to convert an existing demo-safe database, or create a fresh demo database from all migrations and `supabase/seed.sql`.
 
 Do not reuse or copy customer, appointment, administrator, secret, sender, or licensed-asset data from any client installation.
 
